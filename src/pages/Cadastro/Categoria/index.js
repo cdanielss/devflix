@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import PageDefault from '../../../components/PageDefault';
 import FormField from '../../../components/FormField';
+import Button from '../../../components/Button'
 
 function CadastroCategoria() {
   const valoreIniciais = {
@@ -25,6 +26,21 @@ function CadastroCategoria() {
     setValue(infosdoEvento.target.getAttribute('name'), 
     infosdoEvento.target.value)
   }
+
+  useEffect(() => {
+    if(window.location.href.includes('localhost')) {
+      const URL = 'http://localhost:8080/categorias'; 
+      fetch(URL)
+       .then(async (respostaDoServer) =>{
+        if(respostaDoServer.ok) {
+          const resposta = await respostaDoServer.json();
+          setCategorias(resposta);
+          return; 
+        }
+        throw new Error('Não foi possível pegar os dados');
+       })
+    }    
+  }, []);
 
   return (
     <PageDefault>
@@ -50,7 +66,7 @@ function CadastroCategoria() {
       />
       <FormField 
         label="Descrição"
-        type="text"
+        type="textarea"
         name="descricao"
         value={values.descricao}
         onChange={handleChange}
@@ -62,38 +78,15 @@ function CadastroCategoria() {
         value={values.cor}
         onChange={handleChange}
       />
-     {/*  <div>
-        <label>
-          Descrição: 
-          <textarea
-            type="text"
-            name="descricao"
-            value={values.descricao}
-            onChange={handleChange}
-          />
-        </label>
-      </div>
-      <div>
-        <label>
-          Cor:
-          <input
-            type="color"
-            name="cor"
-            value={values.cor}
-            onChange={handleChange}
-          />
-        </label>
-      </div> */}
-
-        <button>
+        <Button>
           Cadastrar
-        </button>
+        </Button>
       </form>
 
       <ul>        
-        {categorias.map((categorias, indice)=>{
+        {categorias.map((categorias)=>{
           return(
-            <li key={`${categorias}${indice}`}>
+            <li key={`${categorias.nome}`}>
               {categorias.nome}
             </li>
           )
