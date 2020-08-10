@@ -10,6 +10,13 @@
 
 Projeto construido durante a Imersão React da Alura.
 
+## Tecnologias: 
+- React
+- React Route
+- React Slick
+- JSON Server
+
+
 ## Como rodar o projeto?
 
 Após baixar o projeto, acesse ele via seu terminal rode os comandos:
